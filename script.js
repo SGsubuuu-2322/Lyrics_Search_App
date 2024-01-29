@@ -74,11 +74,18 @@ function showData(data) {
 }
 
 async function getMoreSongs(url) {
-//   console.log(url);
+  //   console.log(url);
   const res = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
   const data = await res.json();
 
   showData(data);
+}
+
+async function getLyrics(artistName, songTitle) {
+  const res = await fetch(`${apiUrl}/v1/${artistName}/${songTitle}`);
+  const data = await res.json();
+
+  console.log(data);
 }
 
 form.addEventListener("submit", (e) => {
@@ -90,5 +97,16 @@ form.addEventListener("submit", (e) => {
     alert("Please enter in a song or a artist name...");
   } else {
     searchSong(searchTerm);
+  }
+});
+
+resultEl.addEventListener("click", (e) => {
+  const clickedEL = e.target;
+
+  if (clickedEL.tagName === "BUTTON") {
+    const artistName = clickedEL.getAttribute("data-artist");
+    const songTitle = clickedEL.getAttribute("data-songtitle");
+
+    getLyrics(artistName, songTitle);
   }
 });
